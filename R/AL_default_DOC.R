@@ -17,6 +17,7 @@
 #'  rowwise() %>%
 #'  mutate(def_DOC = Al_default_DOC(Lat_DD, Long_DD))
 #'}
+#'@export
 
 
 Al_default_DOC <- function(lat, long){

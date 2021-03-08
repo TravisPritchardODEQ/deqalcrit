@@ -22,3 +22,7 @@ Imports:
     sf (>= 0.9.7),
     dplyr,
     magrittr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

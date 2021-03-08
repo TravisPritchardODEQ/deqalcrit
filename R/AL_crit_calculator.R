@@ -15,7 +15,7 @@
 #'
 
 
-AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "hardness", DOC_col = "DOC", verbose = FALSE){
+AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", verbose = FALSE){
 
   print("Beginning AL criteria calculations")
 
@@ -57,16 +57,16 @@ AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "hardness", DOC
 
     toxicity_data <- odeqALcrit::all
     # MLRs
-    toxicity_data$Normalized_Conc <- ifelse(all$Grouping == "Invertebrate",
+    toxicity_data$Normalized_Conc <- ifelse(toxicity_data$Grouping == "Invertebrate",
                                    # if invertebrate, apply invertebrate MLR
-                                   exp(log(all$EC_LC) - 0.597 * (log(all$DOC) - log(DOC)) -
-                                         8.802 * (all$pH - pH) - 2.089 * (log(all$Hardness) - log(hardness)) +
-                                         0.491 * (all$pH^2 - pH^2) + 0.23 * (all$pH * (log(all$Hardness)) - pH * (log(hardness)))),
+                                   exp(log(toxicity_data$EC_LC) - 0.597 * (log(toxicity_data$DOC) - log(DOC)) -
+                                         8.802 * (toxicity_data$pH - pH) - 2.089 * (log(toxicity_data$Hardness) - log(hardness)) +
+                                         0.491 * (toxicity_data$pH^2 - pH^2) + 0.23 * (toxicity_data$pH * (log(toxicity_data$Hardness)) - pH * (log(hardness)))),
                                    # if not invertebrate, apply vertebrate MLR
-                                   exp(log(all$EC_LC) - 2.209 * (log(all$DOC) - log(DOC)) -
-                                         2.041 * (all$pH - pH) - 1.862 * (log(all$Hardness) - log(hardness)) +
-                                         0.232 * (all$pH * (log(all$Hardness)) - pH * (log(hardness))) +
-                                         0.261 * (all$pH * log(all$DOC) - pH * log(DOC)))
+                                   exp(log(toxicity_data$EC_LC) - 2.209 * (log(toxicity_data$DOC) - log(DOC)) -
+                                         2.041 * (toxicity_data$pH - pH) - 1.862 * (log(toxicity_data$Hardness) - log(hardness)) +
+                                         0.232 * (toxicity_data$pH * (log(toxicity_data$Hardness)) - pH * (log(hardness))) +
+                                         0.261 * (toxicity_data$pH * log(toxicity_data$DOC) - pH * log(DOC)))
     )
 
 

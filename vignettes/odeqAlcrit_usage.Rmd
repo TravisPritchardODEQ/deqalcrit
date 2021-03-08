@@ -1,0 +1,89 @@
+---
+title: "odeqAlcrit_usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{odeqAlcrit_usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+  
+)
+
+library(kableExtra)
+```
+
+```{r setup}
+#library(odeqALcrit)
+library(AWQMSdata)
+library(magrittr)
+library(dplyr)
+```
+
+# Using odeqAlcrit package
+
+First, get some Al data out of AWQMS. In this example, we are going to use data from the Surface Water Ambient Monitoring program, and only look at data from station 10917-ORDEQ, which is on the Pudding River. This function uses the AWQMSdata package to query Oregon's AWQMS database from the backend. To install and setup this package, see <https://github.com/TravisPritchardODEQ/AWQMSdata>
+
+```{r}
+# Query data from AWQMS
+al_data_AWQMS <- AWQMSdata::AWQMS_Data(char = "Aluminum",
+                                       media = 'Water',
+                                       project = 'Surface Water Ambient Monitoring',
+                                       station = '10917-ORDEQ')
+
+
+```
+
+This dataframe is very wide, so for illustration purposes, let's get rid of some columns we do not need. Columns that need to be present are:
+
+-   MLocID,
+
+-   Lat_DD,
+
+-   Long_DD,
+
+-   SampleStartDate,
+
+-   SampleStartTime,
+
+-   SampleMedia
+
+-   SampleSubmedia
+
+```{r}
+al_data <- al_data_AWQMS %>%
+  dplyr::select(MLocID, AU_ID, Lat_DD, Long_DD, SampleStartDate, SampleStartTime,
+                SampleMedia, SampleSubmedia, Char_Name, Char_Name, Sample_Fraction,
+                Result_Numeric,Result_Operator,  Result_Unit )
+```
+
+That gets us:
+
+```{r, echo=FALSE, results = "asis"}
+
+kbl(al_data) %>%
+  kable_paper() %>%
+  scroll_box(width = "700px", height = "500px")
+
+```
+
+Next, we need to get all the ancillary data. The al_get_ancillary() function will query AWQMS and fetch all ancillary data needed to determine the criteria. It is a wrapper around the AWQMS_Data() function that queries the ancillary parameters from monitoring locations in the aluminum dataset. The date range for the query is the min/max date of the entire dataset. This supplies much more data than needed it was the easiest to implement and we'll discard the unneeded data later.
+
+```{r}
+ancillary_df <- al_get_ancillary(al_df)
+
+```
+
+The parameters that are queried are:
+
+```{r results='asis'}
+cat(paste('-', Al_ancillary_params), sep = '\n')
+
+
+```
+
+\
