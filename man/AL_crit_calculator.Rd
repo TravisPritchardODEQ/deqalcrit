@@ -7,7 +7,7 @@
 AL_crit_calculator(
   df,
   ph_col = "pH",
-  hardness_col = "hardness",
+  hardness_col = "Hardness",
   DOC_col = "DOC",
   verbose = FALSE
 )

@@ -18,7 +18,7 @@ library(kableExtra)
 ```
 
 ```{r setup}
-#library(odeqALcrit)
+library(odeqALcrit)
 library(AWQMSdata)
 library(magrittr)
 library(dplyr)
@@ -74,7 +74,7 @@ kbl(al_data) %>%
 Next, we need to get all the ancillary data. The al_get_ancillary() function will query AWQMS and fetch all ancillary data needed to determine the criteria. It is a wrapper around the AWQMS_Data() function that queries the ancillary parameters from monitoring locations in the aluminum dataset. The date range for the query is the min/max date of the entire dataset. This supplies much more data than needed it was the easiest to implement and we'll discard the unneeded data later.
 
 ```{r}
-ancillary_df <- al_get_ancillary(al_df)
+ancillary_df <- odeqALcrit::al_anc_query(al_df)
 
 ```
 
