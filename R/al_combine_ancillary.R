@@ -11,7 +11,11 @@
 
 al_combine_ancillary <- function(al_df, ancillary_df){
 ancillary_data <- ancillary_df %>%
-  dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate,SampleStartTime, SampleMedia, SampleSubmedia, chr_uid,
+  #Some samples have no times. If no times, midnight
+  dplyr::mutate(SampleStartTime = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
+  #create dateformatte ddatetime
+  dplyr::mutate(datetime = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime))) %>%
+  dplyr::select(MLocID, Lat_DD, Long_DD,SampleStartDate, datetime, SampleMedia, SampleSubmedia, chr_uid,
          Char_Name, Sample_Fraction, Result_Numeric, Result_Operator, Result_Unit) %>%
   dplyr::filter(!(Char_Name == 'Organic carbon' & Sample_Fraction == 'Bed Sediment')) %>%
   dplyr::mutate(Char_Name = ifelse(chr_uid %in% c(544, 100331), 'Alkalinity',
@@ -28,18 +32,23 @@ ancillary_data <- ancillary_df %>%
                                              ifelse(Sample_Fraction == "Dissolved"  |
                                                       Sample_Fraction == "Filtered, field"  |
                                                       Sample_Fraction == "Filtered, lab"  , "Dissolved", "Error"))) %>%
-  dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate,Char_Name,SampleMedia, SampleSubmedia ) %>%
+  dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate,datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
   dplyr::mutate(Has_dissolved = ifelse(min(Simplified_sample_fraction) == "Dissolved", 1, 0 )) %>%
   dplyr::ungroup() %>%
   dplyr::filter((Has_dissolved == 1 & Simplified_sample_fraction == "Dissolved") | Has_dissolved == 0) %>%
   dplyr::select(-Has_dissolved) %>%
   #mutate(Char_Name = paste0(Char_Name, "-", Simplified_sample_fraction)) %>%
-  dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate,Char_Name,SampleMedia, SampleSubmedia ) %>%
+  dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
   dplyr::summarise(result = max(Result_Numeric)) %>%
-  dplyr::arrange(MLocID, SampleStartDate) %>%
+  dplyr::arrange(MLocID, datetime) %>%
   tidyr::spread(key = Char_Name, value = result)
 
 colnames(ancillary_data) <- make.names(names(ancillary_data), unique = TRUE, allow_ = TRUE)
+
+
+
+# Add missing parameters ------------------------------------------------------------------------------------------
+ #This section adds columns for missing parameters. These are treated as NAs, but must exist for code to work. 
 
 anc_col <- c("DOC", "TOC", "Hardness","Calcium","Magnesium", "Specific.conductance" )
 
@@ -53,28 +62,32 @@ fncols <- function(data, cname) {
 
 ancillary_data2 <- fncols(ancillary_data, anc_col)
 
+
+# calculate values ------------------------------------------------------------------------------------------------
+
+
 ancillary_data_calculated <- ancillary_data2 %>%
   dplyr::mutate(DOC2 = dplyr::case_when(!is.na(DOC) ~ DOC,
                           is.na(DOC) & !is.na(TOC) ~ TOC * 0.83,
-                          TRUE ~ 9999),
+                          TRUE ~ NA_real_),
          DOC_cmt = dplyr::case_when(!is.na(DOC) ~ NA_character_,
                              is.na(DOC) & !is.na(TOC) ~ "Calculated DOC from TOC",
                              TRUE ~ "Used default DOC value"),
          Hardness2 =  dplyr::case_when(!is.na(Hardness) ~ Hardness,
                                  !is.na(Calcium) & !is.na(Magnesium) ~  2.497*Calcium + 4.1189*Magnesium,
                                  !is.na(Specific.conductance) ~ exp(1.06*log(Specific.conductance) - 1.26),
-                                 TRUE ~ 9999),
+                                 TRUE ~ NA_real_),
          Hardness_cmt =  dplyr::case_when(!is.na(Hardness) ~ NA_character_,
                                 !is.na(Calcium) & !is.na(Magnesium) ~ "Hardness based on Ca and Mg",
                                 !is.na(Specific.conductance) ~ "Hardness based on sp conductivity",
                                 TRUE ~ "No hardness value"),
                           )
 
-if(nrow( dplyr::filter(ancillary_data_calculated, DOC2 == 9999))){
+if(anyNA(ancillary_data_calculated$DOC2) ){
   
   default_DOC <- ancillary_data_calculated %>%
     dplyr::ungroup() %>%
-    dplyr::filter(DOC2 == 9999) %>%
+    dplyr::filter(is.na(DOC2)) %>%
     dplyr::select(MLocID, Lat_DD, Long_DD) %>%
     dplyr::distinct(MLocID, .keep_all = TRUE) %>%
     dplyr::rowwise() %>%
@@ -85,13 +98,13 @@ if(nrow( dplyr::filter(ancillary_data_calculated, DOC2 == 9999))){
   ancillary_data_calculated_2 <- ancillary_data_calculated %>%
     dplyr::ungroup() %>%
     dplyr::left_join(default_DOC, by = "MLocID") %>%
-    dplyr::mutate(DOC = dplyr::case_when(DOC2 != 9999 ~ DOC2,
+    dplyr::mutate(DOC = dplyr::case_when(!is.na(DOC2) ~ DOC2,
                                          TRUE ~ def_DOC),
                   al_ancillary_cmt = dplyr::case_when(!is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ stringr::str_c(DOC_cmt,Hardness_cmt, sep = "; " ),
                                                       !is.na(DOC_cmt) & is.na(Hardness_cmt) ~ DOC_cmt,
                                                       is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ Hardness_cmt,
                                                       TRUE ~ NA_character_))%>%
-    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
+    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
   
   
 } else {
@@ -102,14 +115,20 @@ if(nrow( dplyr::filter(ancillary_data_calculated, DOC2 == 9999))){
                                                       !is.na(DOC_cmt) & is.na(Hardness_cmt) ~ DOC_cmt,
                                                       is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ Hardness_cmt,
                                                       TRUE ~ NA_character_))%>%
-    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
+    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
   
 }
 
 
 combined_df <- al_df %>%
-  dplyr::left_join(ancillary_data_calculated_2, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia'))
-
+  dplyr::left_join(ancillary_data_calculated_2, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
+  dplyr::mutate(SampleStartTime2 = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
+  #create date formatted as datetime
+  dplyr::mutate(datetime_orig = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime2))) %>%
+  dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
+  dplyr::group_by(across(c(-datetime, -DOC, -Hardness, -pH, -al_ancillary_cmt,-time_diff))) %>%
+  dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) )
+ 
 return(combined_df)
 
 }
