@@ -9,7 +9,7 @@
 
 
 
-al_get_ancillary <- function(al_df){
+al_anc_query <- function(al_df){
 
   print("Start AWQMS data pull...")
 

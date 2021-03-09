@@ -24,7 +24,7 @@ ancillary_data <- ancillary_df %>%
                                    ifelse(chr_uid == 2174 & Sample_Fraction %in% c("Total", 'Total Recoverable','Suspended')  , 'TOC',
                                           ifelse(chr_uid == 2174 & Sample_Fraction == "Dissolved", 'DOC', Char_Name ))))) %>%
   dplyr::mutate(Result_Numeric = ifelse(Result_Unit == 'ug/l', Result_Numeric / 1000, Result_Numeric),
-         Result_Unit = ifelse(Result_Unit == 'ug/l', "mg/L", Result_Unit)) %>%
+                Result_Unit = ifelse(Result_Unit == 'ug/l', "mg/L", Result_Unit)) %>%
   dplyr::mutate(Simplified_sample_fraction = ifelse(Sample_Fraction %in% c("Total", "Extractable",
                                                                     "Total Recoverable","Total Residual",
                                                                     "None", "volatile", "Semivolatile",
@@ -115,11 +115,11 @@ if(anyNA(ancillary_data_calculated$DOC2) ){
 #separate out anc params
 keep_cols <- c("MLocID","Lat_DD", "Long_DD", "SampleStartDate", "datetime", "SampleMedia", "SampleSubmedia" )
 
-anc_DOC <- select(ancillary_data_calculated_2, all_of(keep_cols), DOC, DOC_cmt)
+anc_DOC <- dplyr::select(ancillary_data_calculated_2, dplyr::all_of(keep_cols), DOC, DOC_cmt)
 
-anc_hardness <- select(ancillary_data_calculated_2, all_of(keep_cols), Hardness, Hardness_cmt)
+anc_hardness <- dplyr::select(ancillary_data_calculated_2, dplyr::all_of(keep_cols), Hardness, Hardness_cmt)
 
-anc_pH <- select(ancillary_data_calculated_2, all_of(keep_cols), pH)
+anc_pH <- dplyr::select(ancillary_data_calculated_2, dplyr::all_of(keep_cols), pH)
 
 
 # combine it all --------------------------------------------------------------------------------------------------
@@ -131,19 +131,19 @@ combined_df <- al_df %>%
   dplyr::mutate(datetime_orig = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime2))) %>%
   dplyr::left_join(anc_DOC, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
   dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
-  dplyr::group_by(across(c(-datetime, -DOC, -DOC_cmt, -time_diff))) %>%
+  dplyr::group_by(dplyr::across(c(-datetime, -DOC, -DOC_cmt, -time_diff))) %>%
   dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
   dplyr::select(-datetime, -time_diff) %>%
   #HArdness
   dplyr::left_join(anc_hardness, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
   dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
-  dplyr::group_by(across(c(-datetime, -Hardness, -Hardness_cmt, -time_diff))) %>%
+  dplyr::group_by(dplyr::across(c(-datetime, -Hardness, -Hardness_cmt, -time_diff))) %>%
   dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
   dplyr::select(-datetime, -time_diff) %>%
   #pH
   dplyr::left_join(anc_pH, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
   dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
-  dplyr::group_by(across(c(-datetime, -pH, -time_diff))) %>%
+  dplyr::group_by(dplyr::across(c(-datetime, -pH, -time_diff))) %>%
   dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
   dplyr::select(-datetime, -time_diff) %>%
   dplyr::ungroup() %>%

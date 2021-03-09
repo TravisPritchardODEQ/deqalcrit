@@ -21,8 +21,13 @@ Imports:
     geojsonsf (>= 2.0.1),
     sf (>= 0.9.7),
     dplyr,
-    magrittr
+    magrittr,
+    lubridate,
+    tidyr
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    AWQMSdata (>= 1.3)
 VignetteBuilder: knitr
+Remotes:  
+    github::TravisPritchardODEQ/AWQMSdata

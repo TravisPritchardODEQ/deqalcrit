@@ -36,7 +36,7 @@ Al_default_DOC <- function(lat, long){
 
   if(is.null(region_df[1,1])) {
     print("Lat/Long out of area")
-    return(-9999)
+    return(NA_real_)
   } else {
 
   return(region_df[1,1])
