@@ -10,6 +10,7 @@
 
 
 al_combine_ancillary <- function(al_df, ancillary_df){
+  
 ancillary_data <- ancillary_df %>%
   #Some samples have no times. If no times, midnight
   dplyr::mutate(SampleStartTime = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
@@ -99,35 +100,60 @@ if(anyNA(ancillary_data_calculated$DOC2) ){
     dplyr::ungroup() %>%
     dplyr::left_join(default_DOC, by = "MLocID") %>%
     dplyr::mutate(DOC = dplyr::case_when(!is.na(DOC2) ~ DOC2,
-                                         TRUE ~ def_DOC),
-                  al_ancillary_cmt = dplyr::case_when(!is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ stringr::str_c(DOC_cmt,Hardness_cmt, sep = "; " ),
-                                                      !is.na(DOC_cmt) & is.na(Hardness_cmt) ~ DOC_cmt,
-                                                      is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ Hardness_cmt,
-                                                      TRUE ~ NA_character_))%>%
-    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
+                                         TRUE ~ def_DOC))%>%
+    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, DOC_cmt, Hardness_cmt)
   
   
 } else {
   
   ancillary_data_calculated_2 <- ancillary_data_calculated %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(al_ancillary_cmt = dplyr::case_when(!is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ stringr::str_c(DOC_cmt,Hardness_cmt, sep = "; " ),
-                                                      !is.na(DOC_cmt) & is.na(Hardness_cmt) ~ DOC_cmt,
-                                                      is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ Hardness_cmt,
-                                                      TRUE ~ NA_character_))%>%
-    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, al_ancillary_cmt)
+    dplyr::select(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime, SampleMedia, SampleSubmedia,  DOC, Hardness, pH, DOC_cmt, Hardness_cmt)
   
 }
 
+#separate out anc params
+keep_cols <- c("MLocID","Lat_DD", "Long_DD", "SampleStartDate", "datetime", "SampleMedia", "SampleSubmedia" )
+
+anc_DOC <- select(ancillary_data_calculated_2, all_of(keep_cols), DOC, DOC_cmt)
+
+anc_hardness <- select(ancillary_data_calculated_2, all_of(keep_cols), Hardness, Hardness_cmt)
+
+anc_pH <- select(ancillary_data_calculated_2, all_of(keep_cols), pH)
+
+
+# combine it all --------------------------------------------------------------------------------------------------
+
 
 combined_df <- al_df %>%
-  dplyr::left_join(ancillary_data_calculated_2, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
   dplyr::mutate(SampleStartTime2 = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
   #create date formatted as datetime
   dplyr::mutate(datetime_orig = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime2))) %>%
+  dplyr::left_join(anc_DOC, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
   dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
-  dplyr::group_by(across(c(-datetime, -DOC, -Hardness, -pH, -al_ancillary_cmt,-time_diff))) %>%
-  dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) )
+  dplyr::group_by(across(c(-datetime, -DOC, -DOC_cmt, -time_diff))) %>%
+  dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
+  dplyr::select(-datetime, -time_diff) %>%
+  #HArdness
+  dplyr::left_join(anc_hardness, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
+  dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
+  dplyr::group_by(across(c(-datetime, -Hardness, -Hardness_cmt, -time_diff))) %>%
+  dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
+  dplyr::select(-datetime, -time_diff) %>%
+  #pH
+  dplyr::left_join(anc_pH, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
+  dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
+  dplyr::group_by(across(c(-datetime, -pH, -time_diff))) %>%
+  dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
+  dplyr::select(-datetime, -time_diff) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(al_ancillary_cmt = dplyr::case_when(!is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ stringr::str_c(DOC_cmt,Hardness_cmt, sep = "; " ),
+                                                    !is.na(DOC_cmt) & is.na(Hardness_cmt) ~ DOC_cmt,
+                                                    is.na(DOC_cmt) & !is.na(Hardness_cmt) ~ Hardness_cmt,
+                                                    TRUE ~ NA_character_)) %>%
+  dplyr::select(-SampleStartTime2, -datetime_orig, -DOC_cmt, -Hardness_cmt) 
+  
+  
  
 return(combined_df)
 
