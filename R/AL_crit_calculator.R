@@ -15,7 +15,7 @@
 #'
 
 
-AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", verbose = FALSE){
+AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", lat_col = "Lat_DD", long_col = "Long_DD", verbose = FALSE){
 
   print("Beginning AL criteria calculations")
 
@@ -26,6 +26,25 @@ AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC
     pH <- df[ph_col][i,]
     hardness <- df[hardness_col][i,]
     DOC <-  df[DOC_col][i,]
+    Lat <- df[lat_col][i,]
+    Long <- df[long_col][i,]
+    
+    pH <- pH[[1,1]]
+    hardness <- hardness[[1,1]]
+    DOC <- DOC[[1,1]]
+    Lat <- Lat[[1,1]]
+    Long <- Long[[1,1]]
+    
+    if(is.na(pH) | is.na(hardness) | is.na(DOC)){
+      
+      df[i, 'CCC'] <- Al_default_criteria(Lat, Long, type = "Chronic")
+      df[i, 'CMC'] <- Al_default_criteria(Lat, Long, type = "Acute")
+      df[i, 'Final_CMC'] <- df[i, 'CMC']
+      df[i, 'Final_CCC'] <-  df[i, 'CCC']
+      df[i, "Flag"] <- "Default Criteria Used"
+      
+    } else {
+    
 
     Flag <-
       ifelse(pH <= 10.5 &
@@ -135,6 +154,7 @@ AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC
 
       df[i, names(ranks[,c(4:5,8:9,12:13,16:17,2:3,6:7,10:11,14:15)])] <- ranks[,c(4:5,8:9,12:13,16:17,2:3,6:7,10:11,14:15)][1,]
 
+    }
     }
 
     setTxtProgressBar(pb, i)
