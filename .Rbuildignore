@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^odeqALcrit\.Rproj$
 ^data-raw$
+^doc$
+^Meta$
+^README\.Rmd$

@@ -1,11 +1,9 @@
 ---
-title: "odeqAlcrit_usage"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{odeqAlcrit_usage}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: github_document
+always_allow_html: true
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -17,7 +15,7 @@ knitr::opts_chunk$set(
 library(kableExtra)
 ```
 
-# Installing odeqALcrit 
+# Installing odeqALcrit
 
 Install odeqALcrit from github by running this code:
 
@@ -68,6 +66,8 @@ This dataframe is very wide, so for illustration purposes, let's get rid of some
 
 -   SampleSubmedia
 
+If these columns don't exist, the ancillary data joins won't work.
+
 ```{r echo = T, results = 'hide'}
 al_data <- al_data_AWQMS %>%
   dplyr::select(MLocID, AU_ID, Lat_DD, Long_DD, SampleStartDate, SampleStartTime,
@@ -85,7 +85,7 @@ kbl(al_data) %>%
 
 ```
 
-Next, we need to get all the ancillary data. The al_get_ancillary() function will query AWQMS and fetch all ancillary data needed to determine the criteria. It is a wrapper around the AWQMS_Data() function that queries the ancillary parameters from monitoring locations in the aluminum dataset. The date range for the query is the min/max date of the entire dataset. This supplies much more data than needed it was the easiest to implement and we'll discard the unneeded data later.
+Next, we need to get all the ancillary data. The al_get_ancillary() function will query AWQMS and fetch all ancillary data needed to determine the criteria. It is a wrapper around the AWQMS_Data() function that queries the ancillary parameters from monitoring locations in the aluminum dataset. The date range for the query is the min/max date of the entire dataset. This supplies much more data than needed, however, it was the easiest to implement and the code will discard unneeded data later.
 
 ```{r echo = T, results = 'hide'}
 ancillary_data<- odeqALcrit::al_anc_query(al_data)
@@ -100,14 +100,13 @@ cat(paste('-', Al_ancillary_params), sep = '\n')
 
 ```
 
-\
-Now, we have to run some calculations on these values to get the final DOC, pH, and Hardness values. And then join them to the Aluminum dataset. al_combine_ancillary() will perform the calculations identified in the implementation document and then perform the join. The calculations are a bit complex, but here is what is going on.
+Now, we have to run some calculations on these values to get the final DOC, pH, and Hardness values. And then join them to the Aluminum dataset. al_combine_ancillary() will perform the calculations identified in the implementation document and then perform the join. The calculations are a bit complex, but here is what is going on:
 
 1.  Convert all ug/L units to mg/L
 2.  If we have dissolved and total fractions at the same date and time, keep the dissolved fraction, and drop the total fraction. If we only have total fraction, keep the total.
 3.  Convert data format from "Long" to "Wide"
 4.  If we only have TOC and not DOC, convert TOC to DOC by multiplying by 0.83
-5.  If we don't have DOC or TOC, look up the default DOC value by lat/long using the published map service.
+5.  If we don't have DOC or TOC, look up the default DOC value by lat/long using the published map service at <https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/OR_Ecoregions_Aluminum/MapServer>.
 6.  If we don't have Hardness, use calcium and magnesium. If we don't have one of those, use specific conductance.
 7.  Split DOC, Hardness and pH into separate dataframes.
 8.  Join each of the three dataframes into the aluminum dataset. Ancillary data must be collected on the same day. If more than 1 daily result for an ancillary parameter, only keep the one that is nearest in time to the aluminum data.
@@ -141,6 +140,8 @@ kbl(al_criteria) %>%
   kable_paper() %>%
   scroll_box(width = "700px", height = "500px")
 ```
+
+If the aluminum result is missing a value for DOC, pH, or hardness; it will lookup the default criteria values using the lat/long and querying the GIS web service at <https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/OR_Ecoregions_Aluminum/MapServer>
 
 And if we wanted the extra information provided in EPA's criteria calculation:
 

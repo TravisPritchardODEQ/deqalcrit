@@ -20,7 +20,7 @@
 #'@export
 
 
-Al_default_DOC <- function(lat, long){
+al_default_DOC <- function(lat, long){
 
   path_region <- paste0("https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/OR_Ecoregions_Aluminum/MapServer/0/query?geometry=",
                         long,"%2C+",

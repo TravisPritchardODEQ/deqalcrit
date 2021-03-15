@@ -15,7 +15,7 @@
 #'
 
 
-AL_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", lat_col = "Lat_DD", long_col = "Long_DD", verbose = FALSE){
+al_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", lat_col = "Lat_DD", long_col = "Long_DD", verbose = FALSE){
 
   print("Beginning AL criteria calculations")
 

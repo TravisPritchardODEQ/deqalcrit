@@ -23,7 +23,7 @@
 #'@export
 
 
-Al_default_criteria <- function(lat, long, type = c('Chronic')){
+al_default_criteria <- function(lat, long, type = c('Chronic')){
   
   
   if(type == 'Chronic'){
