@@ -1,4 +1,4 @@
-devtools::install_github('TravisPritchardODEQ/odeqAlcrit', force = TRUE)
+devtools::install_github('TravisPritchardODEQ/deqalcrit', force = TRUE)
 
 
 library(tidyverse)
