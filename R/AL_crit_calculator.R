@@ -74,7 +74,7 @@ al_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC
 
 
 
-    toxicity_data <- odeqALcrit::all
+    toxicity_data <- deqalcrit::all
     # MLRs
     toxicity_data$Normalized_Conc <- ifelse(toxicity_data$Grouping == "Invertebrate",
                                    # if invertebrate, apply invertebrate MLR
