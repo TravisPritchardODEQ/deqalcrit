@@ -15,18 +15,18 @@ knitr::opts_chunk$set(
 library(kableExtra)
 ```
 
-# Installing odeqALcrit
+# Installing deqalcrit
 
-Install odeqALcrit from github by running this code:
+Install deqalcrit from github by running this code:
 
 ```{r, eval=F, echo=T}
-devtools::install_github('TravisPritchardODEQ/odeqIRtools')
+devtools::install_github('TravisPritchardODEQ/deqalcrit')
 
 ```
 
 Only Oregon DEQ users with properly setup access to use the AWQMSdata backage will be able to use all features. Other users will be able to use the Al_crit_calculator(), Al_default_DOC(), and Al_default_criteria() functions, as those do not need access to AWQMS.
 
-# Using odeqALcrit package
+# Using deqalcritpackage
 
 This section illustrates a sample workflow for calculating aluminum criteria.
 
@@ -34,7 +34,7 @@ First, lets load some needed packages:
 
 ```{r echo=T, warning=FALSE, results='hide'}
 
-library(odeqALcrit)
+library(deqalcrit)
 library(AWQMSdata)
 
 ```
@@ -88,7 +88,7 @@ kbl(al_data) %>%
 Next, we need to get all the ancillary data. The al_get_ancillary() function will query AWQMS and fetch all ancillary data needed to determine the criteria. It is a wrapper around the AWQMS_Data() function that queries the ancillary parameters from monitoring locations in the aluminum dataset. The date range for the query is the min/max date of the entire dataset. This supplies much more data than needed, however, it was the easiest to implement and the code will discard unneeded data later.
 
 ```{r echo = T, results = 'hide'}
-ancillary_data<- odeqALcrit::al_anc_query(al_data)
+ancillary_data<- deqalcrit::al_anc_query(al_data)
 
 ```
 
@@ -112,7 +112,7 @@ Now, we have to run some calculations on these values to get the final DOC, pH, 
 8.  Join each of the three dataframes into the aluminum dataset. Ancillary data must be collected on the same day. If more than 1 daily result for an ancillary parameter, only keep the one that is nearest in time to the aluminum data.
 
 ```{r echo = T, results = 'hide'}
-al_data_joined <- odeqALcrit::al_combine_ancillary(al_df = al_data,
+al_data_joined <- deqalcrit::al_combine_ancillary(al_df = al_data,
                                        ancillary_df = ancillary_data)
 
 ```
@@ -130,7 +130,7 @@ At this point, calculating the criteria is as easy as:
 
 ```{r echo = T, results = 'hide'}
 
-al_criteria <- odeqALcrit::AL_crit_calculator(al_data_joined)
+al_criteria <- deqalcrit::al_crit_calculator(al_data_joined)
 
 ```
 
@@ -147,7 +147,7 @@ And if we wanted the extra information provided in EPA's criteria calculation:
 
 ```{r echo = T, results = 'hide'}
 
-al_criteria_extra <- odeqALcrit::AL_crit_calculator(al_data_joined, verbose = TRUE)
+al_criteria_extra <- deqalcrit::al_crit_calculator(al_data_joined, verbose = TRUE)
 
 ```
 
@@ -156,4 +156,17 @@ al_criteria_extra <- odeqALcrit::AL_crit_calculator(al_data_joined, verbose = TR
 kbl(al_criteria_extra) %>%
   kable_paper() %>%
   scroll_box(width = "700px", height = "500px")
+```
+
+## Additional tools
+
+These functions use DEQ's map services to lookup default DOC and criteria values. These functions send lat/long information to the map server and returns default values based on geographic location.
+
+```{r}
+
+deqalcrit::al_default_DOC(45.23366, -122.7502)
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Chronic")
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Acute")
 ```

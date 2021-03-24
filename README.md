@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Installing odeqALcrit
+# Installing deqalcrit
 
-Install odeqALcrit from github by running this code:
+Install deqalcrit from github by running this code:
 
 ``` r
-devtools::install_github('TravisPritchardODEQ/odeqIRtools')
+devtools::install_github('TravisPritchardODEQ/deqalcrit')
 ```
 
 Only Oregon DEQ users with properly setup access to use the AWQMSdata
@@ -14,7 +14,7 @@ backage will be able to use all features. Other users will be able to
 use the Al\_crit\_calculator(), Al\_default\_DOC(), and
 Al\_default\_criteria() functions, as those do not need access to AWQMS.
 
-# Using odeqALcrit package
+# Using deqalcritpackage
 
 This section illustrates a sample workflow for calculating aluminum
 criteria.
@@ -22,7 +22,7 @@ criteria.
 First, lets load some needed packages:
 
 ``` r
-library(odeqALcrit)
+library(deqalcrit)
 library(AWQMSdata)
 ```
 
@@ -542,7 +542,7 @@ however, it was the easiest to implement and the code will discard
 unneeded data later.
 
 ``` r
-ancillary_data<- odeqALcrit::al_anc_query(al_data)
+ancillary_data<- deqalcrit::al_anc_query(al_data)
 ```
 
 The parameters that are queried are:
@@ -581,7 +581,7 @@ calculations are a bit complex, but here is what is going on:
     nearest in time to the aluminum data.
 
 ``` r
-al_data_joined <- odeqALcrit::al_combine_ancillary(al_df = al_data,
+al_data_joined <- deqalcrit::al_combine_ancillary(al_df = al_data,
                                        ancillary_df = ancillary_data)
 ```
 
@@ -1185,7 +1185,7 @@ NA
 At this point, calculating the criteria is as easy as:
 
 ``` r
-al_criteria <- odeqALcrit::AL_crit_calculator(al_data_joined)
+al_criteria <- deqalcrit::al_crit_calculator(al_data_joined)
 ```
 
 <div
@@ -1980,7 +1980,7 @@ And if we wanted the extra information provided in EPA’s criteria
 calculation:
 
 ``` r
-al_criteria_extra <- odeqALcrit::AL_crit_calculator(al_data_joined, verbose = TRUE)
+al_criteria_extra <- deqalcrit::al_crit_calculator(al_data_joined, verbose = TRUE)
 ```
 
 <div
@@ -3293,3 +3293,20 @@ Ceriodaphnia
 </table>
 
 </div>
+
+## Additional tools
+
+These functions use DEQ’s map services to lookup default DOC and
+criteria values. These functions send lat/long information to the map
+server and returns default values based on geographic location.
+
+``` r
+deqalcrit::al_default_DOC(45.23366, -122.7502)
+#> [1] 1.16
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Chronic")
+#> [1] 470
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Acute")
+#> [1] 940
+```
