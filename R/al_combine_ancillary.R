@@ -1,6 +1,7 @@
 #' Aluminum Combine Ancillary Data
 #'
-#' This function combines Al data and output from al_get_ancillary in preparation to calculate criteria
+#' This function combines Al data and output from al_get_ancillary in preparation to calculate criteria. Currently the
+#' dataframes must me AWQMS outputs. This may change in an update, if needed. 
 #'
 #' @param al_df data from AWQMS that contains al data. Ancillary data gets joined to this.
 #' @param ancillary_df Output of al_get_ancillary()
@@ -14,17 +15,21 @@ al_combine_ancillary <- function(al_df, ancillary_df){
 ancillary_data <- ancillary_df %>%
   #Some samples have no times. If no times, midnight
   dplyr::mutate(SampleStartTime = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
-  #create dateformatte ddatetime
+  #create datetime in date format
   dplyr::mutate(datetime = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime))) %>%
+  #Get rid of unneeded columns
   dplyr::select(MLocID, Lat_DD, Long_DD,SampleStartDate, datetime, SampleMedia, SampleSubmedia, chr_uid,
          Char_Name, Sample_Fraction, Result_Numeric, Result_Operator, Result_Unit) %>%
+  #Remove bed sediment organic carbon fraction
   dplyr::filter(!(Char_Name == 'Organic carbon' & Sample_Fraction == 'Bed Sediment')) %>%
   dplyr::mutate(Char_Name = ifelse(chr_uid %in% c(544, 100331), 'Alkalinity',
                             ifelse(chr_uid %in% c(1097, 1099), 'Hardness',
                                    ifelse(chr_uid == 2174 & Sample_Fraction %in% c("Total", 'Total Recoverable','Suspended')  , 'TOC',
                                           ifelse(chr_uid == 2174 & Sample_Fraction == "Dissolved", 'DOC', Char_Name ))))) %>%
+  # Convert ug/L to mg/L
   dplyr::mutate(Result_Numeric = ifelse(Result_Unit == 'ug/l', Result_Numeric / 1000, Result_Numeric),
                 Result_Unit = ifelse(Result_Unit == 'ug/l', "mg/L", Result_Unit)) %>%
+  # Simplify sample fraction. This method came from the lab
   dplyr::mutate(Simplified_sample_fraction = ifelse(Sample_Fraction %in% c("Total", "Extractable",
                                                                     "Total Recoverable","Total Residual",
                                                                     "None", "volatile", "Semivolatile",
@@ -33,17 +38,20 @@ ancillary_data <- ancillary_df %>%
                                              ifelse(Sample_Fraction == "Dissolved"  |
                                                       Sample_Fraction == "Filtered, field"  |
                                                       Sample_Fraction == "Filtered, lab"  , "Dissolved", "Error"))) %>%
+  # Preferentially keep dissolved fraction. If dissolved and total fractions exist at the same datetime, keep dissolved.
+  # IF only total exists, keep total.
   dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate,datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
   dplyr::mutate(Has_dissolved = ifelse(min(Simplified_sample_fraction) == "Dissolved", 1, 0 )) %>%
   dplyr::ungroup() %>%
   dplyr::filter((Has_dissolved == 1 & Simplified_sample_fraction == "Dissolved") | Has_dissolved == 0) %>%
   dplyr::select(-Has_dissolved) %>%
-  #mutate(Char_Name = paste0(Char_Name, "-", Simplified_sample_fraction)) %>%
   dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
   dplyr::summarise(result = max(Result_Numeric)) %>%
   dplyr::arrange(MLocID, datetime) %>%
+  # Convert from long format to wide format
   tidyr::spread(key = Char_Name, value = result)
 
+#rename column names. 
 colnames(ancillary_data) <- make.names(names(ancillary_data), unique = TRUE, allow_ = TRUE)
 
 
@@ -51,9 +59,14 @@ colnames(ancillary_data) <- make.names(names(ancillary_data), unique = TRUE, all
 # Add missing parameters ------------------------------------------------------------------------------------------
  #This section adds columns for missing parameters. These are treated as NAs, but must exist for code to work. 
 
+
+
 anc_col <- c("DOC", "TOC", "Hardness","Calcium","Magnesium", "Specific.conductance" )
 
-fncols <- function(data, cname) {
+#This function will add missing columns to the dataframe. If the ancillary datapull is misisng values, the columns still 
+#need to exist inorder for the rest of the function to work. 
+
+addcols <- function(data, cname) {
   add <-cname[!cname%in%names(data)]
   
   if(length(add)!=0) data[add] <- NA
@@ -61,11 +74,12 @@ fncols <- function(data, cname) {
 }
 
 
-ancillary_data2 <- fncols(ancillary_data, anc_col)
+ancillary_data2 <- addcols(ancillary_data, anc_col)
 
 
 # calculate values ------------------------------------------------------------------------------------------------
 
+#This method comes from the al implmentation guide. 
 
 ancillary_data_calculated <- ancillary_data2 %>%
   dplyr::mutate(DOC2 = dplyr::case_when(!is.na(DOC) ~ DOC,
@@ -84,6 +98,8 @@ ancillary_data_calculated <- ancillary_data2 %>%
                                 TRUE ~ "No hardness value"),
                           )
 
+# if unable to calculate a DOC value, lookup default DOC from map server. 
+# Since default DOC is based on lat/long, we just lookit up once per monloc, and then join that back together
 if(anyNA(ancillary_data_calculated$DOC2) ){
   
   default_DOC <- ancillary_data_calculated %>%
@@ -92,6 +108,7 @@ if(anyNA(ancillary_data_calculated$DOC2) ){
     dplyr::select(MLocID, Lat_DD, Long_DD) %>%
     dplyr::distinct(MLocID, .keep_all = TRUE) %>%
     dplyr::rowwise() %>%
+    # send monitoring location's lat/long to the map server and return default DOC
     dplyr::mutate(def_DOC = Al_default_DOC(Lat_DD, Long_DD)) %>%
     dplyr::select(MLocID, def_DOC) %>%
     dplyr::ungroup()
@@ -112,7 +129,8 @@ if(anyNA(ancillary_data_calculated$DOC2) ){
   
 }
 
-#separate out anc params
+#separate out anc params. This creates dataframes for each ancillary parameter and then joins them individually 
+#to the al data. This is done so that if ancillary values have different times, they can still join properly.
 keep_cols <- c("MLocID","Lat_DD", "Long_DD", "SampleStartDate", "datetime", "SampleMedia", "SampleSubmedia" )
 
 anc_DOC <- dplyr::select(ancillary_data_calculated_2, dplyr::all_of(keep_cols), DOC, DOC_cmt)
@@ -124,14 +142,20 @@ anc_pH <- dplyr::select(ancillary_data_calculated_2, dplyr::all_of(keep_cols), p
 
 # combine it all --------------------------------------------------------------------------------------------------
 
+# This joins each ancillary parameter dateframe to the al data. If multiple values exists for the day, preferentially 
+# keep the once closest to time to the aluminum data.  
 
 combined_df <- al_df %>%
   dplyr::mutate(SampleStartTime2 = ifelse(is.na(SampleStartTime), "00:00:00", SampleStartTime)) %>%
   #create date formatted as datetime
   dplyr::mutate(datetime_orig = lubridate::ymd_hms(paste(SampleStartDate, SampleStartTime2))) %>%
+  #Join doc data
   dplyr::left_join(anc_DOC, by = c('MLocID', 'Lat_DD', 'Long_DD', 'SampleStartDate', 'SampleMedia', 'SampleSubmedia')) %>%
+  #Calculate absolute time difference between ancillary data and al data
   dplyr::mutate(time_diff = abs(datetime_orig - datetime)) %>%
+  # group by all columns but datetime, DOC, DOC_cmt, and time_diff
   dplyr::group_by(dplyr::across(c(-datetime, -DOC, -DOC_cmt, -time_diff))) %>%
+  # keep only value with the least time difference. 
   dplyr::filter(time_diff == min(time_diff) | is.na(time_diff) ) %>%
   dplyr::select(-datetime, -time_diff) %>%
   #HArdness
