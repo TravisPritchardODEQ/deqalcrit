@@ -1,6 +1,6 @@
 #' Aluminum default criteria Lookup
 #'
-#' This function looks up default acute or chronic Al criteria values used in calculating Al criteria. The function 
+#' This function looks up default acute or chronic Al criteria values. The function 
 #' sends lat/long values via a query to a Oregon DEQ map server to determine deafult DOC values. DOC values are based on 
 #' georegion as described in ##insert link to interpretation doc when finalized##. If -9999 is returned, station is 
 #' outside of georeferenced area.

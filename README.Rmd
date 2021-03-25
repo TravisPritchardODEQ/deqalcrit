@@ -28,13 +28,13 @@ Only Oregon DEQ users with properly setup access to use the AWQMSdata backage wi
 
 # Included functions
 
-| Function                                                                                                                                     | Purpose                                                                                                              |
-|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| al_anc_query(al_df)                                                                                                                          | Queries AWQMS to get ancillary data needed to calculate Al criteria.                                                 |
-| al_combine_ancillary(al_df, ancillary_df)                                                                                                    | Combines Al data and output from al_get_ancillary in preparation to calculate criteria.                              |
-| al_crit_calculator(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", lat_col = "Lat_DD", long_col = "Long_DD", verbose = FALSE) | Calculates aluminum criteria based on EPA's 2018 national recommended freshwater aquatic life criteria for aluminum. |
-| al_default_DOC(lat, long)                                                                                                                    | Looks up default DOC values used in calculating Al criteria.                                                         |
-| al_default_criteria(lat, long, type)                                                                                                         | Looks up default acute or chronic Al criteria values.                                                                |
+| Function                                                                                                                                         | Purpose                                                                                                              |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **al_anc_query**(al_df)                                                                                                                          | Queries AWQMS to get ancillary data needed to calculate Al criteria.                                                 |
+| **al_combine_ancillary**(al_df, ancillary_df)                                                                                                    | Combines Al data and output from al_get_ancillary in preparation to calculate criteria.                              |
+| **al_crit_calculator**(df, ph_col = "pH", hardness_col = "Hardness", DOC_col = "DOC", lat_col = "Lat_DD", long_col = "Long_DD", verbose = FALSE) | Calculates aluminum criteria based on EPA's 2018 national recommended freshwater aquatic life criteria for aluminum. |
+| **al_default_DOC**(lat, long)                                                                                                                    | Looks up default DOC values used in calculating Al criteria.                                                         |
+| **al_default_criteria**(lat, long, type)                                                                                                         | Looks up default acute or chronic Al criteria values.                                                                |
 
 # Using deqalcritpackage
 
