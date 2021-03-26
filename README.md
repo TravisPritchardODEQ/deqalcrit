@@ -563,7 +563,6 @@ The parameters that are queried are:
 -   Hardness, non-carbonate
 -   Calcium
 -   Magnesium
--   Conductivity
 -   Specific conductance
 
 Now, we have to run some calculations on these values to get the final
@@ -807,7 +806,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -860,7 +859,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -913,7 +912,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -966,7 +965,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -1019,7 +1018,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -1072,7 +1071,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -1125,7 +1124,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -1178,7 +1177,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -1460,7 +1459,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -1469,13 +1468,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-981.1666
+980.3054
 </td>
 <td style="text-align:right;">
-4754.930
+4774.276
 </td>
 <td style="text-align:right;">
-2377.465
+2387.138
 </td>
 <td style="text-align:right;">
 2400
@@ -1530,7 +1529,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -1539,13 +1538,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-981.1666
+980.3054
 </td>
 <td style="text-align:right;">
-4754.930
+4774.276
 </td>
 <td style="text-align:right;">
-2377.465
+2387.138
 </td>
 <td style="text-align:right;">
 2400
@@ -1600,7 +1599,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -1609,13 +1608,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-975.6439
+975.5843
 </td>
 <td style="text-align:right;">
-4318.714
+4321.402
 </td>
 <td style="text-align:right;">
-2159.357
+2160.701
 </td>
 <td style="text-align:right;">
 2200
@@ -1670,7 +1669,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -1679,13 +1678,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-975.6439
+975.5843
 </td>
 <td style="text-align:right;">
-4318.714
+4321.402
 </td>
 <td style="text-align:right;">
-2159.357
+2160.701
 </td>
 <td style="text-align:right;">
 2200
@@ -1740,7 +1739,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -1749,13 +1748,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-630.6589
+632.1950
 </td>
 <td style="text-align:right;">
-3171.219
+3199.684
 </td>
 <td style="text-align:right;">
-1585.609
+1599.842
 </td>
 <td style="text-align:right;">
 1600
@@ -1810,7 +1809,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -1819,13 +1818,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-630.6589
+632.1950
 </td>
 <td style="text-align:right;">
-3171.219
+3199.684
 </td>
 <td style="text-align:right;">
-1585.609
+1599.842
 </td>
 <td style="text-align:right;">
 1600
@@ -1880,7 +1879,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -1889,13 +1888,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-543.8967
+544.8366
 </td>
 <td style="text-align:right;">
-2606.035
+2619.108
 </td>
 <td style="text-align:right;">
-1303.018
+1309.554
 </td>
 <td style="text-align:right;">
 1300
@@ -1950,7 +1949,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -1959,13 +1958,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-543.8967
+544.8366
 </td>
 <td style="text-align:right;">
-2606.035
+2619.108
 </td>
 <td style="text-align:right;">
-1303.018
+1309.554
 </td>
 <td style="text-align:right;">
 1300
@@ -2399,7 +2398,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -2408,13 +2407,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-981.1666
+980.3054
 </td>
 <td style="text-align:right;">
-4754.930
+4774.276
 </td>
 <td style="text-align:right;">
-2377.465
+2387.138
 </td>
 <td style="text-align:right;">
 2400
@@ -2425,49 +2424,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-1089.89109192582
+1091.58888301009
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1601.12028507716
+1603.61444964553
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-2215.76501393158
+2235.26713222098
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-2307.63516507466
+2327.94588109153
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-5228.36486309281
+5274.38246395711
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-7495.66833263363
+7507.34480100749
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-8309.68204679272
+8322.62655491534
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-17475.1599135935
+17628.9680266462
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -2517,7 +2516,7 @@ ug/l
 2.65
 </td>
 <td style="text-align:right;">
-59.7
+61.5
 </td>
 <td style="text-align:right;">
 7.8
@@ -2526,13 +2525,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-981.1666
+980.3054
 </td>
 <td style="text-align:right;">
-4754.930
+4774.276
 </td>
 <td style="text-align:right;">
-2377.465
+2387.138
 </td>
 <td style="text-align:right;">
 2400
@@ -2543,49 +2542,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-1089.89109192582
+1091.58888301009
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1601.12028507716
+1603.61444964553
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-2215.76501393158
+2235.26713222098
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-2307.63516507466
+2327.94588109153
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-5228.36486309281
+5274.38246395711
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-7495.66833263363
+7507.34480100749
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-8309.68204679272
+8322.62655491534
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-17475.1599135935
+17628.9680266462
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -2635,7 +2634,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -2644,13 +2643,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-975.6439
+975.5843
 </td>
 <td style="text-align:right;">
-4318.714
+4321.402
 </td>
 <td style="text-align:right;">
-2159.357
+2160.701
 </td>
 <td style="text-align:right;">
 2200
@@ -2661,49 +2660,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-1041.54518227944
+1041.75592574141
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1530.09702669035
+1530.40662242374
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1864.04254199501
+1866.16689147557
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1941.32955979405
+1943.54198915069
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-4398.43325831024
+4403.44591719386
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-7163.17189639942
+7164.62127341142
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-7941.07720140902
+7942.68397769649
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-14701.2166463018
+14717.9708357812
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -2753,7 +2752,7 @@ ug/l
 2.13
 </td>
 <td style="text-align:right;">
-51.7
+51.9
 </td>
 <td style="text-align:right;">
 7.8
@@ -2762,13 +2761,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-975.6439
+975.5843
 </td>
 <td style="text-align:right;">
-4318.714
+4321.402
 </td>
 <td style="text-align:right;">
-2159.357
+2160.701
 </td>
 <td style="text-align:right;">
 2200
@@ -2779,49 +2778,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-1041.54518227944
+1041.75592574141
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1530.09702669035
+1530.40662242374
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1864.04254199501
+1866.16689147557
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1941.32955979405
+1943.54198915069
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-4398.43325831024
+4403.44591719386
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-7163.17189639942
+7164.62127341142
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-7941.07720140902
+7942.68397769649
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-14701.2166463018
+14717.9708357812
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -2871,7 +2870,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -2880,13 +2879,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-630.6589
+632.1950
 </td>
 <td style="text-align:right;">
-3171.219
+3199.684
 </td>
 <td style="text-align:right;">
-1585.609
+1599.842
 </td>
 <td style="text-align:right;">
 1600
@@ -2897,49 +2896,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-713.880083163512
+718.114941262288
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1048.7358697886
+1054.95714937938
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1532.92321220838
+1557.28005663353
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1596.4813450929
+1621.84807412433
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-3617.11725301984
+3674.5901658818
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-4909.6725097656
+4938.79752232819
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-5442.85255157447
+5475.14047884978
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-12089.7649796668
+12281.861049712
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -2989,7 +2988,7 @@ ug/l
 2.22
 </td>
 <td style="text-align:right;">
-45.7
+47.6
 </td>
 <td style="text-align:right;">
 7.4
@@ -2998,13 +2997,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-630.6589
+632.1950
 </td>
 <td style="text-align:right;">
-3171.219
+3199.684
 </td>
 <td style="text-align:right;">
-1585.609
+1599.842
 </td>
 <td style="text-align:right;">
 1600
@@ -3015,49 +3014,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-713.880083163512
+718.114941262288
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-1048.7358697886
+1054.95714937938
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1532.92321220838
+1557.28005663353
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1596.4813450929
+1621.84807412433
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-3617.11725301984
+3674.5901658818
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-4909.6725097656
+4938.79752232819
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-5442.85255157447
+5475.14047884978
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-12089.7649796668
+12281.861049712
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -3107,7 +3106,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -3116,13 +3115,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-543.8967
+544.8366
 </td>
 <td style="text-align:right;">
-2606.035
+2619.108
 </td>
 <td style="text-align:right;">
-1303.018
+1309.554
 </td>
 <td style="text-align:right;">
 1300
@@ -3133,49 +3132,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-600.852277190911
+602.836826513472
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-882.690735314912
+885.606166224136
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1201.58718144833
+1211.27262439556
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1251.40744455258
+1261.49446578173
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-2835.28991563957
+2858.14388673777
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-4132.32975303303
+4145.97838602203
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-4581.09201693307
+4596.22286257336
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-9476.60424905603
+9552.99080777169
 </td>
 <td style="text-align:left;">
 Ceriodaphnia
@@ -3225,7 +3224,7 @@ ug/l
 1.98
 </td>
 <td style="text-align:right;">
-35.4
+36.1
 </td>
 <td style="text-align:right;">
 7.3
@@ -3234,13 +3233,13 @@ ug/l
 NA
 </td>
 <td style="text-align:right;">
-543.8967
+544.8366
 </td>
 <td style="text-align:right;">
-2606.035
+2619.108
 </td>
 <td style="text-align:right;">
-1303.018
+1309.554
 </td>
 <td style="text-align:right;">
 1300
@@ -3251,49 +3250,49 @@ NA
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-600.852277190911
+602.836826513472
 </td>
 <td style="text-align:left;">
 Salmo
 </td>
 <td style="text-align:left;">
-882.690735314912
+885.606166224136
 </td>
 <td style="text-align:left;">
 Salvelinus
 </td>
 <td style="text-align:left;">
-1201.58718144833
+1211.27262439556
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-1251.40744455258
+1261.49446578173
 </td>
 <td style="text-align:left;">
 Lampsilis
 </td>
 <td style="text-align:left;">
-2835.28991563957
+2858.14388673777
 </td>
 <td style="text-align:left;">
 Daphnia
 </td>
 <td style="text-align:left;">
-4132.32975303303
+4145.97838602203
 </td>
 <td style="text-align:left;">
 Micropterus
 </td>
 <td style="text-align:left;">
-4581.09201693307
+4596.22286257336
 </td>
 <td style="text-align:left;">
 Oncorhynchus
 </td>
 <td style="text-align:left;">
-9476.60424905603
+9552.99080777169
 </td>
 <td style="text-align:left;">
 Ceriodaphnia

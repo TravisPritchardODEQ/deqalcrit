@@ -105,7 +105,7 @@ ancillary_data<- deqalcrit::al_anc_query(al_data)
 The parameters that are queried are:
 
 ```{r results='asis', echo=FALSE}
-cat(paste('-', Al_ancillary_params), sep = '\n')
+cat(paste('-', al_ancillary_params), sep = '\n')
 
 
 ```
