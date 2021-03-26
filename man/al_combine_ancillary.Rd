@@ -15,5 +15,6 @@ al_combine_ancillary(al_df, ancillary_df)
 Dataframe with DOC, Hardness, pH, al_ancillary_cmt added to al_df
 }
 \description{
-This function combines Al data and output from al_get_ancillary in preparation to calculate criteria
+This function combines Al data and output from al_get_ancillary in preparation to calculate criteria. Currently the
+dataframes must me AWQMS outputs. This may change in an update, if needed.
 }

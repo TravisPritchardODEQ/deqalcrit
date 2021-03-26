@@ -13,5 +13,5 @@ al_anc_query(al_df)
 data from AWQMS that contains al ancillary data.
 }
 \description{
-This function queries AWQMS to get ancillary data neede dto calculate Al criteria
+This function queries AWQMS to get ancillary data needed to calculate Al criteria
 }
