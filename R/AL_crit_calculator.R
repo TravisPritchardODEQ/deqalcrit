@@ -37,11 +37,11 @@ al_crit_calculator <- function(df, ph_col = "pH", hardness_col = "Hardness", DOC
     
     if(is.na(pH) | is.na(hardness) | is.na(DOC)){
       
-      df[i, 'CCC'] <- Al_default_criteria(Lat, Long, type = "Chronic")
-      df[i, 'CMC'] <- Al_default_criteria(Lat, Long, type = "Acute")
+      df[i, 'CCC'] <- al_default_criteria(Lat, Long, type = "Chronic")
+      df[i, 'CMC'] <- al_default_criteria(Lat, Long, type = "Acute")
       df[i, 'Final_CMC'] <- df[i, 'CMC']
       df[i, 'Final_CCC'] <-  df[i, 'CCC']
-      df[i, "Flag"] <- "Default Criteria Used"
+      df[i, "Flag"] <- paste("Default Criteria Used:", al_default_criteria(Lat, Long, type = "Ecoregion"), "Ecoregion")
       
     } else {
     

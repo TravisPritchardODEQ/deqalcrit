@@ -24,8 +24,8 @@ outside of georeferenced area.
 }
 \examples{
 \dontrun{
-Al_default_criteria(45.57770, -122.7476, type = "Acute")
-Al_default_criteria(45.57770, -122.7476, type = "Chronic")
+al_default_criteria(45.57770, -122.7476, type = "Acute")
+al_default_criteria(45.57770, -122.7476, type = "Chronic")
 
 #Return chronic criteria
 aluminum_data_mlocs <- aluminum_data \%>\%
