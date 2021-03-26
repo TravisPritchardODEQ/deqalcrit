@@ -3318,4 +3318,7 @@ deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Chronic")
 
 deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Acute")
 #> [1] 940
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Ecoregion")
+#> [1] "Willamette Valley"
 ```

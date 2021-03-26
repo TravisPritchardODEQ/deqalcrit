@@ -179,4 +179,6 @@ deqalcrit::al_default_DOC(45.23366, -122.7502)
 deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Chronic")
 
 deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Acute")
+
+deqalcrit::al_default_criteria(45.23366, -122.7502, type = "Ecoregion")
 ```
