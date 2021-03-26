@@ -1,12 +1,12 @@
-#' Al_ancillary_params
+#' al_ancillary_params
 #'
 #' A vector of parameters needing to query to calculate Al criteria
 #'
 #' @format A vector with 7 elements
 #' \describe{
-#' \item{Al_ancillary_params}{Characteristic name in AWQMS for needed parameters to calculate criteria}
+#' \item{al_ancillary_params}{Characteristic name in AWQMS for needed parameters to calculate criteria}
 #' }
-"Al_ancillary_params"
+"al_ancillary_params"
 
 #' Toxicology data needed to calculate Al criteria
 #'
