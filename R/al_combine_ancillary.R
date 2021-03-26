@@ -41,10 +41,10 @@ ancillary_data <- ancillary_df %>%
   # Preferentially keep dissolved fraction. If dissolved and total fractions exist at the same datetime, keep dissolved.
   # IF only total exists, keep total.
   dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate,datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
-  dplyr::mutate(Has_dissolved = ifelse(min(Simplified_sample_fraction) == "Dissolved", 1, 0 )) %>%
+  dplyr::mutate(Has_total = ifelse(min(Simplified_sample_fraction) == "Total", 1, 0 )) %>%
   dplyr::ungroup() %>%
-  dplyr::filter((Has_dissolved == 1 & Simplified_sample_fraction == "Dissolved") | Has_dissolved == 0) %>%
-  dplyr::select(-Has_dissolved) %>%
+  dplyr::filter((Has_total == 1 & Simplified_sample_fraction == "Total") | Has_total == 0) %>%
+  dplyr::select(-Has_total) %>%
   dplyr::group_by(MLocID, Lat_DD, Long_DD, SampleStartDate, datetime,Char_Name,SampleMedia, SampleSubmedia ) %>%
   dplyr::summarise(result = max(Result_Numeric)) %>%
   dplyr::arrange(MLocID, datetime) %>%
